@@ -1,11 +1,40 @@
-console.log("hi");
-
 const options = ["rock", "paper", "scissors"];
+const rockButton = document.querySelector('#rock');
+const paperButton = document.querySelector('#paper');
+const scissorsButton = document.querySelector('#scissors');
+const results = document.querySelector(".results");
+const playerScore = document.querySelector("#playerScore");
+const computerScore = document.querySelector("#computerScore");
+const tieScore = document.querySelector("#tieScore");
+
+
+rockButton.addEventListener('click',() => {
+    const computerSelection = getComputerChoice()
+    const playerSelection = 'rock'
+    playRound(playerSelection, computerSelection)
+
+});
+
+paperButton.addEventListener('click', () => {
+    const computerSelection = getComputerChoice()
+    const playerSelection = 'paper'
+    playRound(playerSelection, computerSelection)
+    
+});
+
+scissorsButton.addEventListener('click', () => {
+    const computerSelection = getComputerChoice()
+    const playerSelection = 'scissors'
+    playRound(playerSelection, computerSelection)
+    
+});
+
 
 function getComputerChoice(){
     const choice = options[Math.floor(Math.random() * options.length)];
     return choice;
 }
+
 
 function checkWinner(playerSelection, computerSelection){
     if(playerSelection == computerSelection){
@@ -23,42 +52,50 @@ function checkWinner(playerSelection, computerSelection){
     }
 }
 
-function playRound(playerSelection, computerSelection){
+
+const playRound = (playerSelection, computerSelection) => {
+    
+    let playerNumber = 1;
+    let computerNumber = 1;
+    let tieNumber = 1;
+    
+   
+    
     const result = checkWinner(playerSelection, computerSelection);
     if(result == "Tie"){
-        return "Its a tie";
-       
+        const p = document.createElement('p')
+        p.innerText = `Tie, you both picked ${playerSelection}`
+        results.appendChild(p);
+        const i = document.createTextNode(
+            `${tieNumber++}`,
+          );
+          tieScore.appendChild(i);
     }
-    else if(result == "Player"){
-        return `You win, ${playerSelection} beats ${computerSelection}`
-    }
-    else{
-        return `You lose, ${computerSelection} beats ${playerSelection}`
-    }
-}
 
-function getPlayerChoice(){
-    let validatedInput = false;
-    while(validatedInput == false){
-        const choice = prompt("Rock, Paper or Scissors");
-        if(choice == null){
-            continue;
-        }
-        const choiceInLower = choice.toLowerCase(); 
-        if (options.includes(choiceInLower)){
-            validatedInput == true;
-            return choiceInLower;
-        }
+    else if(result == "Player"){
+        const p = document.createElement('p')
+        p.innerText = `You win, ${playerSelection} beats ${computerSelection}`
+        results.appendChild(p);
+        const i = document.createTextNode(
+            `${playerNumber++}`
+        );
+        playerScore.appendChild(i);
     }
-}
+
+    else{
+        const p = document.createElement('p')
+        p.innerText = `You lose, ${computerSelection} beats ${playerSelection}`
+        results.appendChild(p);
+        const i = document.createTextNode(
+            `${computerNumber}`
+            );
+    }
+}            
+
+
 
 function game(){
-    let scorePlayer = 0;
-    let scoreComputer = 0;
-    let scoreTie = 0;
-    console.log("welcome")
     for (let i = 0; i< 5; i++){
-        const playerSelection = getPlayerChoice();
         const computerSelection = getComputerChoice();
         console.log(playRound(playerSelection, computerSelection));
         console.log("---------");
@@ -83,9 +120,6 @@ function game(){
     else{
         console.log("We have a tie")
     }
-    console.log("The players score is " ,scorePlayer);
-    console.log("The computers score is ", scoreComputer);
-    console.log("With ",scoreTie, "tie(s)");
+    
 }
 
-game()
