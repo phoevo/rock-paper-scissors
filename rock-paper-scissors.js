@@ -1,4 +1,5 @@
 const options = ["rock", "paper", "scissors"];
+const container = document.querySelector(".container")
 const rockButton = document.querySelector('#rock');
 const paperButton = document.querySelector('#paper');
 const scissorsButton = document.querySelector('#scissors');
@@ -35,18 +36,25 @@ function getComputerChoice(){
     return choice;
 }
 
+let tieNumber = 1;
+let playerNumber = 1;
+let computerNumber = 1;
 
-function checkWinner(playerSelection, computerSelection){
+function checkWinner(playerSelection, computerSelection, tieNumber){
+
     if(playerSelection == computerSelection){
+        
         return "Tie";
     }
+
     else if(
         (playerSelection == "rock" && computerSelection == "scissors")||
         (playerSelection == "scissors" && computerSelection == "paper")||
-        (playerSelection == "paper" && computerSelection == "rock")
+        (playerSelection == "paper" && computerSelection == "rock")         
     ){
-        return "Player";
-    }
+        return "Player";     
+   }
+
     else{
         return "Computer";
     }
@@ -54,32 +62,33 @@ function checkWinner(playerSelection, computerSelection){
 
 
 const playRound = (playerSelection, computerSelection) => {
-    
-    let playerNumber = 1;
-    let computerNumber = 1;
-    let tieNumber = 1;
-    
-   
-    
     const result = checkWinner(playerSelection, computerSelection);
     if(result == "Tie"){
         const p = document.createElement('p')
-        p.innerText = `Tie, you both picked ${playerSelection}`
+        p.innerText = `Tie, ${playerSelection} and ${computerSelection} are the same.`
         results.appendChild(p);
         const i = document.createTextNode(
-            `${tieNumber++}`,
-          );
-          tieScore.appendChild(i);
+            `${tieNumber++}`
+        );
+        tieScore.appendChild(i); 
+        setTimeout(() => {
+            p.remove();
+         }, 3000);
     }
-
+    
+    
     else if(result == "Player"){
         const p = document.createElement('p')
         p.innerText = `You win, ${playerSelection} beats ${computerSelection}`
         results.appendChild(p);
         const i = document.createTextNode(
-            `${playerNumber++}`
+            `${playerNumber++}`,    
         );
-        playerScore.appendChild(i);
+        playerScore.appendChild(i);   
+        setTimeout(() => {
+            p.remove();
+         }, 3000);
+        
     }
 
     else{
@@ -87,39 +96,47 @@ const playRound = (playerSelection, computerSelection) => {
         p.innerText = `You lose, ${computerSelection} beats ${playerSelection}`
         results.appendChild(p);
         const i = document.createTextNode(
-            `${computerNumber}`
+            `${computerNumber++}`
             );
+        computerScore.appendChild(i);
+        setTimeout(() => {
+            p.remove();
+         }, 3000);
+        
     }
-}            
+
+    if (tieNumber > 5){
+        const p = document.createElement('p')
+        p.innerText = 'GAME OVER, TIE'
+        results.appendChild(p);
+        document.getElementById('rock').setAttribute('disabled','disabled');
+        document.getElementById('paper').setAttribute('disabled','disabled');
+        document.getElementById('scissors').setAttribute('disabled','disabled');
+
+        
+    }
+
+    else if(playerNumber > 5){
+        const p = document.createElement('p')
+        p.innerText = `GAME OVER, PLAYER WINS ${playerNumber - 1} to ${computerNumber - 1}`
+        results.appendChild(p);
+        document.getElementById('rock').setAttribute('disabled','disabled');
+        document.getElementById('paper').setAttribute('disabled','disabled');
+        document.getElementById('scissors').setAttribute('disabled','disabled');
 
 
+    }
 
-function game(){
-    for (let i = 0; i< 5; i++){
-        const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection, computerSelection));
-        console.log("---------");
+    else if (computerNumber > 5){
+        const p = document.createElement('p')
+        p.innerText = `GAME OVER, COMPUTER WINS ${computerNumber - 1} to ${playerNumber - 1}`
+        results.appendChild(p);
+        document.getElementById('rock').setAttribute('disabled','disabled');
+        document.getElementById('paper').setAttribute('disabled','disabled');
+        document.getElementById('scissors').setAttribute('disabled','disabled');
 
-        if(checkWinner(playerSelection, computerSelection) == "Tie"){
-            scoreTie++;
-        }
-        else if(checkWinner(playerSelection, computerSelection) == "Computer"){
-            scoreComputer++;
-        }
-        else if(checkWinner(playerSelection, computerSelection) == "Player"){
-            scorePlayer++;
-        }            
     }
-    console.log("Game over")
-    if(scorePlayer > scoreComputer){
-        console.log("Player is the winner");
-    }
-    else if(scorePlayer < scoreComputer){
-        console.log("Computer is the winner");
-    }
-    else{
-        console.log("We have a tie")
-    }
-    
-}
+}    
+
+
 
