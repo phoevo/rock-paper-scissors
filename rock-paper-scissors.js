@@ -82,7 +82,7 @@ const playRound = (playerSelection, computerSelection) => {
         p.innerText = `You win, ${playerSelection} beats ${computerSelection}`
         results.appendChild(p);
         const i = document.createTextNode(
-            `${playerNumber++}`,    
+            `${playerNumber}`,    
         );
         playerScore.appendChild(i);   
         setTimeout(() => {
